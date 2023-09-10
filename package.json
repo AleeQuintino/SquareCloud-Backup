@@ -1,0 +1,17 @@
+{
+  "name": "app_backup",
+  "version": "1.0.0",
+  "description": "app para realizar o backup das suas aplicações SquareCloud",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "AleeQuintino",
+  "license": "ISC",
+  "dependencies": {
+    "@squarecloud/api": "^3.1.0",
+    "cron": "^2.4.3",
+    "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6"
+  }
+}
