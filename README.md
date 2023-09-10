@@ -1,6 +1,6 @@
 <div align="center">
 
-  <p>SquareCloud Backup é uma aplicação para realizar o backup de todos os seus apps da square!</p>
+  <p>SquareCloud Backup é uma aplicação para realizar o backup de todos os seus apps da Square todos os dias!</p>
 
 </div>
 
