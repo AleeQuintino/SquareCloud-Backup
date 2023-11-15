@@ -48,7 +48,7 @@ const backupFiles = async () => {
             }
 
             // Obtenha o buffer de backup da aplicação
-            const backupFile = await application.backup.download().catch(e => { console.log(e); return false; })
+            const backupFile = false //await application.backup.download().catch(e => { console.log(e); return false; })
 
             // Registra na database a url de backup do app
             await BackupUrl.create({
