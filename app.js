@@ -16,7 +16,7 @@ const backupFiles = async () => {
         .catch(err => ({ userErr: err }));
 
     // Caso não consiga obter os dados do usuário retorna erro
-    if (userErr) return console.error('Erro ao inteirar sobre as informações do usuário:', { console: e })
+    if (userErr) return console.error('Erro ao inteirar sobre as informações do usuário:', { console: userErr })
 
     // Sincroniza o banco de dados
     await database.sync();
