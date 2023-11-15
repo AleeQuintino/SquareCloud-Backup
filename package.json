@@ -1,6 +1,6 @@
 {
   "name": "app_backup",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "app para realizar o backup das suas aplicações SquareCloud",
   "main": "app.js",
   "scripts": {
