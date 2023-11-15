@@ -33,7 +33,7 @@ const backupFiles = async () => {
             const application = await api.applications.get(app[0]);
 
             // Console que inicia o backup
-            console.log(`Backup iniciado para a aplicação\nNome:${application.name}\nID:${application.id}`);
+            console.log(`\nBackup iniciado para a aplicação\nNome:${application.name}\nID:${application.id}`);
 
             // Aguarda um minuto antes da próxima requisição
             await delay(60000);
@@ -43,7 +43,7 @@ const backupFiles = async () => {
 
             // Caso não haja uma URL de backup, ele pula para o próximo registro
             if (!backupUrl) {
-                console.log(`Não há URL de backup disponível para a aplicação\nNome:${application.name}\nID:${application.id}`);
+                console.log(`Não há URL de backup disponível para a aplicação\nNome:${application.name}\nID:${application.id}\n------------------------------------------`);
                 continue;
             }
 
@@ -60,11 +60,11 @@ const backupFiles = async () => {
                 backupURL: backupUrl,
                 fileBuffer: backupFile
             }).then(() => {
-                console.log(`O backup da aplicação foi concluido com sucesso!\nNome:${application.name}\nID:${application.id}`);
+                console.log(`O backup da aplicação foi concluido com sucesso!\nNome:${application.name}\nID:${application.id}\n------------------------------------------`);
             }).catch(() => []);
 
         } catch (error) {
-            console.error('Erro ao inteirar sobre a aplicação', { id: application.id, nome: application.name, console: { error } });
+            console.error('Erro ao inteirar sobre a aplicação', { id: application.id, nome: application.name, console: { error } }, '\n------------------------------------------');
             continue;
         }
 
