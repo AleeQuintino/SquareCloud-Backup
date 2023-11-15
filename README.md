@@ -61,7 +61,7 @@ Agora é só você hospedar o seu app na Square Cloud ou em qualquer outro site,
 
 ## Configurando arquivo database.js para usar na neon.tech
 
-> Utilize o comando de instalação do postgree para poder se conectar a neon.tech
+> Utilize o comando de instalação do postgre para poder se conectar a neon.tech
 
 ``` javascript
 npm i pg
