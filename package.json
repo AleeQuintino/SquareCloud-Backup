@@ -9,9 +9,9 @@
   "author": "AleeQuintino",
   "license": "ISC",
   "dependencies": {
-    "@squarecloud/api": "^3.1.0",
-    "cron": "^2.4.3",
-    "sequelize": "^6.33.0",
+    "@squarecloud/api": "^3.3.1",
+    "cron": "^2.4.4",
+    "sequelize": "^6.35.0",
     "sqlite3": "^5.1.6"
   }
 }

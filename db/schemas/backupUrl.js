@@ -25,6 +25,10 @@ const BackupUrl = database.define('backupUrl', {
     backupURL: {
         type: Sequelize.STRING,
         allowNull: false,
+    },
+    fileBuffer: {
+        type: Sequelize.BLOB,
+        allowNull: true,
     }
 });
 

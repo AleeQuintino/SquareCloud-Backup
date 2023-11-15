@@ -9,66 +9,68 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 // Crie uma função assíncrona para baixar e salvar arquivos para cada aplicação do usuário
 const backupFiles = async () => {
-    try {
-        // Sincroniza o banco de dados
-        await database.sync();
 
-        // Exclua os dados antigos do banco de backups
-        await deleteOldBackups();
+    // Obtêm informações do usuário
+    const { user, userErr } = await api.users.get()
+        .then(r => ({ user: !r ? undefined : r, userErr: !r ? true : undefined }))
+        .catch(err => ({ userErr: err }));
 
-        // Obtenha informações do usuário
-        const user = await api.users.get();
+    // Caso não consiga obter os dados do usuário retorna erro
+    if (userErr) return console.error('Erro ao inteirar sobre as informações do usuário:', { console: e })
 
-        // intera sobre todos os apps do usuário
-        for await (const app of user.applications) {
+    // Sincroniza o banco de dados
+    await database.sync();
+
+    // Exclui os dados antigos do banco de backups
+    await deleteOldBackups();
+
+    // intera sobre todos os apps do usuário
+    for await (const app of user.applications) {
+
+        try {
 
             // Define o application.id
-            const application = app[1];
+            const application = await api.applications.get(app[0]);
 
             // Console que inicia o backup
-            console.log(`Backup iniciado para a aplicação\nNome:${application.tag}\nID:${application.id}`);
+            console.log(`Backup iniciado para a aplicação\nNome:${application.name}\nID:${application.id}`);
 
             // Aguarda um minuto antes da próxima requisição
             await delay(60000);
 
             // Obtenha o URL de backup da aplicação
-            const backupUrl = await application.backupURL()
-                .catch(e => {
-                    console.log(e);
-                    return false;
-                })
+            const backupUrl = await application.backup.url().catch(e => { console.log(e); return false; })
 
             // Caso não haja uma URL de backup, ele pula para o próximo registro
             if (!backupUrl) {
-                console.log(`Não há URL de backup disponível para a aplicação\nNome:${application.tag}\nID:${application.id}`);
+                console.log(`Não há URL de backup disponível para a aplicação\nNome:${application.name}\nID:${application.id}`);
                 continue;
             }
 
-            // Atualiza a URL de download
-            const fileUrl = backupUrl.replace(
-                'https://squarecloud.app/dashboard/backup/',
-                'https://registry.squarecloud.app/v1/backup/download/'
-            );
+            // Obtenha o buffer de backup da aplicação
+            const backupFile = await application.backup.download().catch(e => { console.log(e); return false; })
 
             // Registra na database a url de backup do app
             await BackupUrl.create({
                 appId: application.id,
-                appName: application.tag,
+                appName: application.name,
                 appRam: application.ram,
-                isWebsite: application.isWebsite,
+                isWebsite: application.isWebsite(),
                 cluster: application.cluster,
-                backupURL: fileUrl
+                backupURL: backupUrl,
+                fileBuffer: backupFile
             }).then(() => {
-                console.log(`O backup da aplicação foi concluido com sucesso!\nNome:${application.tag}\nID:${application.id}`);
+                console.log(`O backup da aplicação foi concluido com sucesso!\nNome:${application.name}\nID:${application.id}`);
             }).catch(() => []);
 
-        };
+        } catch (error) {
+            console.error('Erro ao inteirar sobre a aplicação', { id: application.id, nome: application.name, console: { error } });
+            continue;
+        }
 
-        return console.log('CronJob concluído com sucesso');
+    };
 
-    } catch (err) {
-        return console.error('Erro no CronJob:', err);
-    }
+    return console.log('CronJob concluído com sucesso');
 
 }
 
