@@ -39,7 +39,8 @@ const backupFiles = async () => {
             await delay(60000);
 
             // Obtenha o URL de backup da aplicação
-            const backupUrl = await application.backup.url().catch(e => { console.log(e); return false; })
+            const backup = await application.backups.create().catch(e => { console.log(e); return false; })
+            const backupUrl = backup?.url
 
             // Caso não haja uma URL de backup, ele pula para o próximo registro
             if (!backupUrl) {
@@ -64,7 +65,7 @@ const backupFiles = async () => {
             }).catch(() => []);
 
         } catch (error) {
-            console.error('Erro ao inteirar sobre a aplicação', { id: application.id, nome: application.name, console: { error } }, '\n------------------------------------------');
+            console.error('Erro ao inteirar sobre a aplicação', { id: application?.id, nome: application?.name, console: { error } }, '\n------------------------------------------');
             continue;
         }
 
